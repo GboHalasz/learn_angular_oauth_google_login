@@ -29,7 +29,11 @@
               "src/styles.css"
             ],
             "scripts": [
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "./src/assets/mymodules/myValidation.js",
+              "./src/assets/mymodules/storeData.js",
+              "./src/assets/mymodules/user.js",
+              "./src/assets/mymodules/welcome.js"
             ]
           },
           "configurations": {
