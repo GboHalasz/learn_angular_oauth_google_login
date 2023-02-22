@@ -1,13 +1,13 @@
+<!-- TODO: Login link on register side -->
+
 <div class="container-fluid">
 
     <div class="row text-center">
         <div id="welcomePlace" class="d-none"></div>
-        <div id="signinup" class="col-12 col-md-6 vh-100 bg-primary-subtle pt-5 overflow-auto">
+        <div id="signInCol" class="col-12 col-md-6 vh-100 bg-primary-subtle pt-5 overflow-auto">
 
             <h2>Log in!</h2>
-            <span>or</span>
-            <a href="#regUName">Please register!</a>
-
+            <span>or <a routerLink="./" (click)="scrollTo('signUpCol')">Please register!</a></span>
             <form class="mx-auto" style="max-width: 360px;">
                 <hr>
                 <h3 class="mb-4">Login with e-mail and password</h3>
@@ -23,9 +23,9 @@
                     <span class="input-group-text px-2 w-25" id="password-enter1">Password:</span>
                     <input type="password" id="logPassword" class="form-control" placeholder="password..."
                         aria-label="Password" aria-describedby="password-enter1">
-                        <div id="logWarn" class="w-100 invisible text-danger lh-1" style="height: 2.1rem;">
-                            "Password or email is missing or incorrect!"
-                        </div>
+                    <div id="logWarn" class="w-100 invisible text-danger lh-1" style="height: 2.1rem;">
+                        "Password or email is missing or incorrect!"
+                    </div>
                 </div>
 
                 <!-- loginButton comp -->
@@ -61,8 +61,10 @@
 
 
         </div>
-        <div class="col-12 col-md-6 vh-100 bg-success-subtle py-5 overflow-auto">
+        <div id="signUpCol" class="col-12 col-md-6 vh-100 bg-success-subtle py-5 overflow-auto">
             <h2>Sign up!</h2>
+            <span>or still <a routerLink="./" (click)="scrollTo('signInCol')">Log in.</a></span>
+
             <form class="mx-auto" style="max-width: 360px;">
                 <hr>
                 <h3>Registration form</h3>
