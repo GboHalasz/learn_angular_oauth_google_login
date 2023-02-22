@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,9 +13,10 @@ import { LoginpageComponent } from './loginpage/loginpage.component';
     EntrancePageComponent,
     LoginpageComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
+  imports: [    
+    BrowserModule,      
+    AppRoutingModule,
+    OAuthModule,  
   ],
   providers: [],
   bootstrap: [AppComponent]
