@@ -15,15 +15,15 @@ export class LoginpageComponent {
     console.log('Starting Application!');
     const { startVal, validData } = regValidation();
     const { storeInSessionStr } = storeData();
-    const { user, setUserNameFromSessionStorage } = userData();
-    
-    setUserNameFromSessionStorage()
+    const { user } = userData();
+        
     if (user.name) {
       this.router.navigate(['main'])
     }
 
     startVal("blur", () => {
       storeInSessionStr("user", validData());
+      this.router.navigate(['main'])
     });
   }
 

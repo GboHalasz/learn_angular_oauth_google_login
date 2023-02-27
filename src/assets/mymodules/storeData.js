@@ -4,5 +4,9 @@ const storeData = () => {
         sessionStorage.setItem(key, jSonData);
     }
 
-    return {storeInSessionStr: storeInSessionStorage}
+    const removeFromStorage = (key) => {
+        sessionStorage.removeItem(key);        
+    }
+
+    return {storeInSessionStr: storeInSessionStorage, removeFromStorage}
 }

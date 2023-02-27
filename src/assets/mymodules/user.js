@@ -9,5 +9,7 @@ const userData = () => {
         user.name = JSON.parse(sessionStorage.getItem("user")) ? JSON.parse(sessionStorage.getItem("user")).name : "";
     }
 
-    return { setUserNameFromSessionStorage: setNameFromSessionStorage, user }
+    setNameFromSessionStorage()
+
+    return { user }
 }
