@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-entrance-page',
@@ -6,5 +7,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./entrance-page.component.css']
 })
 export class EntrancePageComponent {
+  constructor(
+    private router: Router
+  ) { }
 
+  
+  ngOnInit() {
+    const { user, setUserNameFromSessionStorage } = userData();
+    setUserNameFromSessionStorage()
+    if (!user.name) {
+      this.router.navigate(['/'])
+    }    
+    myWelcome.show("Welcome, ", document.getElementById("welcomePlace"), user.name);
+  }
 }
