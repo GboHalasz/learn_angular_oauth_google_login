@@ -18,7 +18,7 @@ import { LoginpageComponent } from './loginpage/loginpage.component';
     BrowserModule,      
     AppRoutingModule,    
     HttpClientModule,
-    OAuthModule,  
+    OAuthModule.forRoot(),  
   ],
   providers: [],
   bootstrap: [AppComponent]
