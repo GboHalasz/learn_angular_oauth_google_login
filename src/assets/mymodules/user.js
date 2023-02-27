@@ -1,5 +1,6 @@
 
 const userData = () => {
+    console.log("lefut az userdata")
     const user = {
         name: ""
     }

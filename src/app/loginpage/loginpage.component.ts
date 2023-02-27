@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { GoogleApiService } from '../google-api-service.service';
 
 @Component({
   selector: 'app-loginpage',
@@ -8,16 +9,19 @@ import { Router } from '@angular/router';
 })
 export class LoginpageComponent {
   constructor(
-    private router: Router
+    private router: Router,
+    private readonly google: GoogleApiService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     console.log('Starting Application!');
+    await this.google.checkLoginStatus();
     const { startVal, validData } = regValidation();
     const { storeInSessionStr } = storeData();
     const { user } = userData();
-        
+
     if (user.name) {
+      console.log("user ellenőrzés")
       this.router.navigate(['main'])
     }
 
@@ -25,6 +29,10 @@ export class LoginpageComponent {
       storeInSessionStr("user", validData());
       this.router.navigate(['main'])
     });
+
+    document.getElementById("GooBtn")?.addEventListener("click", () => {
+      this.google.signIn()
+    })
   }
 
   scrollTo(element: any): void {
