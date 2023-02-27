@@ -13,11 +13,17 @@ export class EntrancePageComponent {
 
   
   ngOnInit() {
-    const { user, setUserNameFromSessionStorage } = userData();
-    setUserNameFromSessionStorage()
+    const { user } = userData();
+    const { removeFromStorage } = storeData();
+    
     if (!user.name) {
       this.router.navigate(['/'])
     }    
     myWelcome.show("Welcome, ", document.getElementById("welcomePlace"), user.name);
+    document.getElementById("outBtn")?.addEventListener("click", () => {
+      removeFromStorage("user")
+      this.router.navigate(['/'])
+    })
   }
-}
+  }
+  
