@@ -29,10 +29,11 @@ export class GoogleApiService {
     await this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
       if (this.oAuthService.hasValidAccessToken()) {
         //van már        
-        await this.oAuthService.loadUserProfile().then((userProfile) => {
+        await this.oAuthService.loadUserProfile().then((userProfile: any) => {
           const { storeInSessionStr } = storeData()
           console.log("van google felhasználó")
-          storeInSessionStr("user", JSON.stringify({ name: JSON.parse(JSON.stringify(userProfile)).info.name }));
+          //storeInSessionStr("user", JSON.stringify({ name: JSON.parse(JSON.stringify(userProfile)).info.name }));
+          storeInSessionStr("user", JSON.stringify({ name: userProfile.info.name }));
         })
 
       } else {
