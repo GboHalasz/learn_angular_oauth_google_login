@@ -21,6 +21,7 @@ export class GoogleApiService {
     private router: Router) {
 
     oAuthService.configure(authCodeFlowConfig);
+    oAuthService.logoutUrl = 'https://www.google.com/accounts/Logout';
   }
 
   checkLoginStatus = async () => {
