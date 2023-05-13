@@ -7,7 +7,7 @@ const authCodeFlowConfig: AuthConfig = {
   issuer: 'https://accounts.google.com',
   strictDiscoveryDocumentValidation: false,
   redirectUri: window.location.origin,
-  clientId: '774384742196-0daqn6oortp3s7qt7jigf7opslkjakus.apps.googleusercontent.com',
+  clientId: '143m15hbklwer1235k1bfqkqj345', //TODO: here comes the real client ID
   scope: 'openid email profile'
 }
 
