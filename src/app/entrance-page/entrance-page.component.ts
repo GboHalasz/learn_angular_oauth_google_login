@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { GoogleApiService } from '../google-api-service.service';
 
 @Component({
-  selector: 'app-entrance-page',
-  templateUrl: './entrance-page.component.html',
-  styleUrls: ['./entrance-page.component.css']
+    selector: 'app-entrance-page',
+    templateUrl: './entrance-page.component.html',
+    styleUrls: ['./entrance-page.component.css'],
+    standalone: false
 })
 export class EntrancePageComponent {
   constructor(
