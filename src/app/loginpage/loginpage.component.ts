@@ -22,8 +22,7 @@ export class LoginpageComponent {
     const { user } = userData();
 
     if (user.name) {
-      console.log("user ellenőrzés")
-      this.router.navigate(['main'])
+      await this.router.navigate(['main'])
     }
 
     startVal("blur", () => {

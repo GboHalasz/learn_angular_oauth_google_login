@@ -25,18 +25,18 @@ export class GoogleApiService {
   }
 
   checkLoginStatus = async () => {
-    console.log("lefut a checkloginstatus")
+
     await this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
       if (this.oAuthService.hasValidAccessToken()) {
-        //van már        
+
         await this.oAuthService.loadUserProfile().then((userProfile: any) => {
           const { storeInSessionStr } = storeData()
-          console.log("van google felhasználó")          
+          console.log("A Google user is currently logged in.")
           storeInSessionStr("user", JSON.stringify({ name: userProfile.info.name }));
         })
 
       } else {
-        console.log("nincs bejelentkezett google felhasználó")
+        console.log("There is no logged-in Google user.")
       }
     })
   }
