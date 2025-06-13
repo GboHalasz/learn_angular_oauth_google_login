@@ -5,7 +5,7 @@
              class="col-12 col-md-6 vh-100 pt-5 overflow-auto">
       <h2 id="loginSection">Log in!</h2>
       <span>or <a aria-label="If you don't have an account, please register." routerLink="./"
-                  (click)="scrollTo('signUpCol')">Please register!</a></span>
+                  (click)="scrollToSectionAndFocus()">Please register!</a></span>
 
 
       <form class="mx-auto" style="max-width: 360px;">
@@ -96,8 +96,8 @@
         </div>
       </form>
     </section>
-    <section id="signUpCol" class="col-12 col-md-6 vh-100 py-5 overflow-auto">
-      <h2 id="signupSection">Sign up!</h2>
+    <section #signUpSection id="signUpCol" class="col-12 col-md-6 vh-100 py-5 overflow-auto">
+      <h2 id="signupSectionHead">Sign up!</h2>
       <form class="mx-auto" style="max-width: 360px;">
         <hr>
         <h3>Registration form</h3>
@@ -105,7 +105,8 @@
         <!-- username text comp -->
         <div class="input-group input-group-sm mb-3">
           <label class="input-group-text px-2 w-25" id="username-add1" for="regUName">User name*</label>
-          <input type="text"
+          <input #signUpUser
+                 type="text"
                  name="register-username"
                  id="regUName"
                  class="form-control"
