@@ -14,21 +14,25 @@ export class EntrancePageComponent {
     private readonly google: GoogleApiService
   ) { }
 
-  
+
   ngOnInit() {
     const { user } = userData();
     const { removeFromStorage } = storeData();
-    
+
     if (!user.name) {
       this.router.navigate(['/'])
-    }    
+    }
     myWelcome.show("Welcome, ", document.getElementById("welcomePlace"), user.name);
-    
-    document.getElementById("outBtn")?.addEventListener("click", () => {      
+
+    document.getElementById("outBtn")?.addEventListener("click", async () =>  {
+      const method = sessionStorage.getItem('loginMethod');
       removeFromStorage("user")
-      this.google.signOut()
-      this.router.navigate(['/'])
+      if (method === 'google') {
+        await this.google.signOut()
+
+      }
+      await this.router.navigate(['/'])
     })
   }
   }
-  
+
