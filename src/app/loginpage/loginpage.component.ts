@@ -1,7 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {GoogleApiService} from '../services/google-api-service.service';
 import {UserService} from '../services/user.service';
+import {Tooltip} from "bootstrap";
 
 @Component({
   selector: 'app-loginpage',
@@ -10,7 +11,7 @@ import {UserService} from '../services/user.service';
   standalone: false
 })
 
-export class LoginpageComponent implements OnInit {
+export class LoginpageComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private readonly google: GoogleApiService,
@@ -36,6 +37,11 @@ export class LoginpageComponent implements OnInit {
       this.userService.user = {name: JSON.parse(validData()).name};
       this.router.navigate(['main'])
     });
+  }
+
+  ngAfterViewInit(): void {
+    const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(el => new Tooltip(el));
   }
 
   googleLogin = () => {

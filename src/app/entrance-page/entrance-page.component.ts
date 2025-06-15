@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {GoogleApiService} from '../services/google-api-service.service';
 import {UserService} from '../services/user.service';
+import {Tooltip} from "bootstrap";
 
 @Component({
   selector: 'app-entrance-page',
@@ -9,7 +10,7 @@ import {UserService} from '../services/user.service';
   styleUrls: ['./entrance-page.component.css'],
   standalone: false
 })
-export class EntrancePageComponent implements OnInit {
+export class EntrancePageComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
     private readonly google: GoogleApiService,
@@ -27,6 +28,11 @@ export class EntrancePageComponent implements OnInit {
       this.userName = user.name;
     }
 
+  }
+
+  ngAfterViewInit(): void {
+    const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(el => new Tooltip(el));
   }
 
   logout = async () => {
