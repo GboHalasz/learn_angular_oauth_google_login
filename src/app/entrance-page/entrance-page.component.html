@@ -1,8 +1,10 @@
-<div class="container-fluid">
+<main class="container-fluid">
     <div class="row">
         <div class="ent-page col-12 d-flex justify-content-center align-items-center vh-100 bg-secondary text-center ">
-            <!-- <a class="d-inline-block btn btn-lg btn-danger" routerLink="login" role="button">ENTER</a> --> 
-            <div id="welcomePlace" class="d-none"></div>           
+            <div *ngIf="this.userName" class="d-inline-block">
+              <h2>Welcome, {{ userName }}</h2>
+              <button class="btn btn-sm btn-primary mx-2" (click)="this.logout()">Log out!</button>
+            </div>
         </div>
     </div>
-</div>
+</main>

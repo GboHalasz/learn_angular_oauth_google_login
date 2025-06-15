@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
-import { environment } from '../environments/environment'
+import { environment } from '../../environments/environment'
+import { UserService } from './user.service';
 
 const authCodeFlowConfig: AuthConfig = {
   issuer: 'https://accounts.google.com',
@@ -19,7 +20,8 @@ export class GoogleApiService {
 
   constructor(
     private readonly oAuthService: OAuthService,
-    private router: Router) {
+    private router: Router,
+    private userService: UserService) {
 
     oAuthService.configure(authCodeFlowConfig);
   }
@@ -30,9 +32,8 @@ export class GoogleApiService {
       if (this.oAuthService.hasValidAccessToken()) {
         sessionStorage.setItem('loginMethod', 'google');
         await this.oAuthService.loadUserProfile().then((userProfile: any) => {
-          const { storeInSessionStr } = storeData()
+          this.userService.user = { name: userProfile.info.name }
           console.log("A Google user is currently logged in.")
-          storeInSessionStr("user", JSON.stringify({ name: userProfile.info.name }));
         })
 
       } else {

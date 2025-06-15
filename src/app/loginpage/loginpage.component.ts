@@ -1,6 +1,7 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {GoogleApiService} from '../google-api-service.service';
+import {GoogleApiService} from '../services/google-api-service.service';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-loginpage',
@@ -8,10 +9,12 @@ import {GoogleApiService} from '../google-api-service.service';
   styleUrls: ['./loginpage.component.css'],
   standalone: false
 })
-export class LoginpageComponent {
+
+export class LoginpageComponent implements OnInit {
   constructor(
     private router: Router,
-    private readonly google: GoogleApiService
+    private readonly google: GoogleApiService,
+    private userService: UserService
   ) {
   }
 
@@ -21,22 +24,22 @@ export class LoginpageComponent {
   async ngOnInit() {
     console.log('Starting Application!');
     await this.google.checkLoginStatus();
-    const {startVal, validData} = regValidation();
-    const {storeInSessionStr} = storeData();
-    const {user} = userData();
 
-    if (user.name) {
+    if (this.userService.isLoggedIn()) {
       await this.router.navigate(['main'])
+      return;
     }
 
+    const {startVal, validData} = regValidation();
+
     startVal("blur", () => {
-      storeInSessionStr("user", validData());
+      this.userService.user = {name: JSON.parse(validData()).name};
       this.router.navigate(['main'])
     });
+  }
 
-    document.getElementById("GooBtn")?.addEventListener("click", () => {
-      this.google.signIn()
-    })
+  googleLogin = () => {
+    this.google.signIn()
   }
 
   scrollToSectionAndFocus(): void {
