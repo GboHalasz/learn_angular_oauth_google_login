@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --configuration production",
+    "build:xampp": "ng build --configuration production --base-href /learn-angular-oauth/ --deploy-url /learn-angular-oauth/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
