@@ -9,7 +9,6 @@ import { Tooltip } from 'bootstrap';
     standalone: false
 })
 export class AppComponent {
-  title = 'K230214login';
   constructor(private router: Router) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
