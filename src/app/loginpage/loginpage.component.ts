@@ -31,10 +31,10 @@ export class LoginpageComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const {startVal, validData} = regValidation();
+    const myRegForm = regValidation();
 
-    startVal("blur", () => {
-      this.userService.user = {name: JSON.parse(validData()).name};
+    myRegForm.startValidation("blur", () => {
+      this.userService.user = {name: JSON.parse(myRegForm.dataToJson()).name};
       this.router.navigate(['main'])
     });
   }
