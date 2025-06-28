@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import {OAuthService} from "angular-oauth2-oidc";
+import { GoogleApiService } from "../services/google-api-service.service";
+import { MockOauthService} from "../services/mock-oauth-service";
 import { EntrancePageComponent } from './entrance-page.component';
 
 describe('EntrancePageComponent', () => {
@@ -8,7 +10,11 @@ describe('EntrancePageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EntrancePageComponent ]
+      declarations: [ EntrancePageComponent ],
+      providers: [
+        GoogleApiService,
+        { provide: OAuthService, useClass: MockOauthService }
+      ]
     })
     .compileComponents();
 

@@ -1,8 +1,19 @@
-<div class="container-fluid">
-    <div class="row">
+<main class="container-fluid">
+    <section class="row">
+      <h1 aria-label="Welcome page" class="visually-hidden">Welcome page</h1>
         <div class="ent-page col-12 d-flex justify-content-center align-items-center vh-100 bg-secondary text-center ">
-            <!-- <a class="d-inline-block btn btn-lg btn-danger" routerLink="login" role="button">ENTER</a> --> 
-            <div id="welcomePlace" class="d-none"></div>           
+            <div *ngIf="userName" class="d-inline-block">
+              <h2>Welcome, {{ userName }}</h2>
+              <button
+                type="button"
+                class="btn btn-sm btn-primary mx-2" (click)="logout()"
+                aria-label="Log out of the application"
+                title="Log out of the application"
+                data-bs-toggle="tooltip"
+              >
+                Log out!
+              </button>
+            </div>
         </div>
-    </div>
-</div>
+    </section>
+</main>

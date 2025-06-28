@@ -7,12 +7,13 @@ class MyFormError extends Error {
         this.name = "MyFormError";
     }
 }
+
 const regValidation = function () {
     const myRegForm = {
         inpFieldsById: {
             regUName: {  //this must be equal with the id of input element!!!
-                storageName: "name",  //do not add name if you don't want to store the data (pl. for confirmed password)
-                value: "",                          //assigned on focusout                       
+                storageName: "name",  //do not add name if you don't want to store the data (fe. for confirmed password)
+                value: "",                          //assigned on focusout
                 isValid: function (val) {
                     return val && (val.length >= 3)  //trim value before checking
                 }
@@ -30,7 +31,7 @@ const regValidation = function () {
                 storageName: "password",
                 value: "",
                 isValid: function (val) {
-                    regPass2.value = "";                     //these are for the case when  
+                    regPass2.value = "";                     //these are for the case when
                     myRegForm.inpFieldsById.regPass2.value = ""  //confirm password was given first
                     return val && (val.length >= 6);
                 }
@@ -44,23 +45,35 @@ const regValidation = function () {
             logEmail: {
                 value: "",
                 isValid: function (val) {
-                    return val ? true : false
+                    return !!val
                 }
             },
             logPassword: {
                 value: "",
                 isValid: function (val) {
-                    return val ? true : false
+                    return !!val
                 }
+            }
+        },
+
+        registerBtnCallback: null,
+
+        setRegisterBtnCallback: function (callbackFn) {
+            if (typeof callbackFn == "function") {
+                this.registerBtnCallback = callbackFn;
+            } else {
+                throw new Error("Not a function!");
             }
         },
 
         enableRegBtn: function () {
             regBtn.classList.remove("disabled");
+            regBtn.removeAttribute("aria-disabled");
         },
 
         disableRegBtn: function () {
             regBtn.classList.add("disabled");
+            regBtn.setAttribute("aria-disabled", "true");
         },
 
         sha512: async function (str) {
@@ -70,9 +83,11 @@ const regValidation = function () {
         },
 
         setValueFromInp: async function (inp) {
-               let validData = this.checkField(inp);       
-            if (inp.type == "password" && validData) {
-                await this.sha512(validData).then(x => { this.inpFieldsById[inp.id].value = x });
+            let validData = this.checkField(inp);
+            if (inp.type === "password" && validData) {
+                await this.sha512(validData).then(x => {
+                    this.inpFieldsById[inp.id].value = x
+                });
                 validData = "";
                 return
             }
@@ -80,41 +95,37 @@ const regValidation = function () {
         },
 
         showWarnText: function (inp) {
-            inp.classList.add("is-invalid")
-            if (inp.id === "logEmail" || inp.id === "logPassword") {
-                if (window.logEmail.value === "" || window.logPassword.value === "") {
-                    window.logWarn.classList.remove("invisible")
-                }
-            } else {
-                window[inp.id + "Warn"].classList.remove("invisible")
+            const warnBox = window[inp.id + "Warn"];
+            warnBox.classList.remove("invisible");
+            if (!warnBox.textContent || !inp.ariaInvalid) {
+                inp.classList.add("is-invalid")
+                inp.setAttribute("aria-invalid", "true");
+                inp.focus();
+                warnBox.textContent = inp.dataset.error;
             }
         },
 
         hideWarnText: function (inp) {
             inp.classList.remove("is-invalid");
-            if (inp.id === "logEmail" || inp.id === "logPassword") {                
-                if (window.logEmail.value !== "" && window.logPassword.value !== "") {
-                    window.logWarn.classList.add("invisible")
-                }
-            } else {
-                window[inp.id + "Warn"].classList.add("invisible")
-            }
+            inp.removeAttribute("aria-invalid");
+            window[inp.id + "Warn"].classList.add("invisible");
+            window[inp.id + "Warn"].textContent = "";
         },
 
         checkField: function (inp) {
             try {
-                this.hideWarnText(inp);                
                 const val = inp.value.trim()
                 if (!inp.value.trim()) {
                     throw new MyFormError("The field is empty! Mandatory field!")
                 }
                 if (this.inpFieldsById[inp.id].isValid && !this.inpFieldsById[inp.id].isValid(val)) {
-                    throw new MyFormError("The given value is ivalid!")
+                    throw new MyFormError("The given value is invalid!")
                 }
+                this.hideWarnText(inp);
                 return val;
             } catch (err) {
                 if (err.name === "MyFormError") {
-                    this.showWarnText(inp);                    
+                    this.showWarnText(inp);
                 }
                 console.error(`${err.name}: ${err.message}`);
                 return "";
@@ -155,28 +166,15 @@ const regValidation = function () {
             }
         },
 
-        addListenerToFields: function (ev) {
-            try {
-                if (this.inpFieldsById.length != 0) {
-                    for (const field in this.inpFieldsById) {
-                        window[field].addEventListener(ev, async function () {
-                            await myRegForm.setValueFromInp(this);                            
-                            myRegForm.regValuesAreReady() ? myRegForm.enableRegBtn() : myRegForm.disableRegBtn();
-                        })
-                    }
-                }
-
-            } catch (err) {
-                console.error(`${err.name}: ${err.message}`);
-            }
-        },
-
         dataToJson: function () {
             let user = {};
             try {
                 for (const field in myRegForm.inpFieldsById) {
                     if (myRegForm.inpFieldsById[field].storageName) {
-                        user = { ...user, [myRegForm.inpFieldsById[field].storageName]: myRegForm.inpFieldsById[field].value }
+                        user = {
+                            ...user,
+                            [myRegForm.inpFieldsById[field].storageName]: myRegForm.inpFieldsById[field].value
+                        }
                     }
                 }
                 return JSON.stringify(user);
@@ -185,21 +183,48 @@ const regValidation = function () {
             }
         },
 
-        addListenerToRegBtn: function (cfn) {
-            regBtn.addEventListener("click", function () {
-                cfn();
+        handleRegBtnClick: function () {
+            if (myRegForm.regValuesAreReady()) {
+                myRegForm.registerBtnCallback();
                 myRegForm.resetFields();
                 myRegForm.resetValues();
-                myRegForm.disableRegBtn();                
-            })
-            return cfn;
+                myRegForm.disableRegBtn();
+            } else {
+                throw new Error("Input validation logic broken!");
+            }
         },
 
-        startValidation: function (ev, cfn) {
-            myRegForm.addListenerToFields(ev);
-            myRegForm.addListenerToRegBtn(cfn);
-        }
+        addListenerToRegBtn: function () {
+            regBtn.addEventListener("click", this.handleRegBtnClick)
+        },
+
+        removeListenerToRegBtn: function () {
+            regBtn.removeEventListener("click", this.handleRegBtnClick )
+        },
+
+        startValidation: function (event, regBtnCallback) {
+            try {
+                this.setRegisterBtnCallback(regBtnCallback)
+                if (Object.keys(this.inpFieldsById).length !== 0) {
+                    for (const field in this.inpFieldsById) {
+                        window[field].addEventListener(event, async function () {
+                            await myRegForm.setValueFromInp(this);
+                            if (myRegForm.regValuesAreReady()) {
+                                myRegForm.addListenerToRegBtn();
+                                myRegForm.enableRegBtn();
+                            } else {
+                                myRegForm.disableRegBtn();
+                                myRegForm.removeListenerToRegBtn();
+                            }
+                        })
+                    }
+                }
+
+            } catch (err) {
+                console.error(`${err.name}: ${err.message}`);
+            }
+        },
     }
 
-    return { startVal: myRegForm.startValidation, validData: myRegForm.dataToJson }
+    return myRegForm
 }

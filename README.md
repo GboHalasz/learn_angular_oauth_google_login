@@ -1,27 +1,91 @@
-# K230214login
+# Angular Login/SignUp page with Google OAuth Login
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4.
 
-## Development server
+This project was originally generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4 two years ago. It has since been updated to version ^19.2.14.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 🔍 Meta Description
 
-## Code scaffolding
+A frontend portfolio project built with Angular and Google OAuth login, reusing the login interface from a previous project created with HTML, CSS, JavaScript, and Bootstrap.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## 📸 Screenshots
 
-## Build
+![Form Desktop View](./screenshots/desktop-view.png)
+![Google Consent](./screenshots/desktop-view-google-consent.png)
+![Welcome page](./screenshots/desktop-view-welcome-page.png)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🚀 Features
 
-## Running unit tests
+- ✅ Responsive login & registration form layout
+- 🔐 Google OAuth login integration
+- 💡 Form validation with meaningful error messages
+- 🌐 Mobile-friendly design
+- ⚙️ Built with modern web technologies (e.g. Angular, Bootstrap)
+- 🎯 Easily extensible for additional authentication providers
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## 🔧 Technologies Used
 
-## Running end-to-end tests
+- HTML5
+- CSS3
+- Bootstrap 5
+- TypeScript
+- Angular
+- Google OAuth
+- Lighthouse (Accessibility/Performance audit)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## 📦 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/GboHalasz/learn_angular_oauth_google_login.git
+cd learn_angular_oauth_google_login
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start development server
+
+```bash
+ng serve
+```
+
+💡 If you want to test Google OAuth functionality, use the production configuration:
+```bash
+ng serve --configuration production
+```
+
+### 4. Code scaffolding
+
+Generate a new component.
+
+```bash
+ng generate component component-name
+```
+
+### 5. Build for production
+
+```bash
+npm run build
+```
+The build artifacts will be stored in the `dist/` directory.
+
+### 6. Running unit tests
+
+Execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+npm test
+```
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+To get more help on the Angular CLI use `ng help`.
+
+
+## 👩‍💻 Author
+
+Created by **Gabor Halasz**  
+GitHub: [@GboHalasz](https://github.com/GboHalasz)

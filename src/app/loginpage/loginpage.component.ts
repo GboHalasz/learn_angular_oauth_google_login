@@ -1,42 +1,58 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { GoogleApiService } from '../google-api-service.service';
+import {Component, ElementRef, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
+import {GoogleApiService} from '../services/google-api-service.service';
+import {UserService} from '../services/user.service';
+import {Tooltip} from "bootstrap";
 
 @Component({
-    selector: 'app-loginpage',
-    templateUrl: './loginpage.component.html',
-    styleUrls: ['./loginpage.component.css'],
-    standalone: false
+  selector: 'app-loginpage',
+  templateUrl: './loginpage.component.html',
+  styleUrls: ['./loginpage.component.css'],
+  standalone: false
 })
-export class LoginpageComponent {
+
+export class LoginpageComponent implements OnInit, AfterViewInit {
   constructor(
     private router: Router,
-    private readonly google: GoogleApiService
-  ) { }
+    private readonly google: GoogleApiService,
+    private userService: UserService
+  ) {
+  }
+
+  @ViewChild('signUpSection') signUpSection!: ElementRef;
+  @ViewChild('signUpUser') signUpEmail!: ElementRef;
 
   async ngOnInit() {
     console.log('Starting Application!');
     await this.google.checkLoginStatus();
-    const { startVal, validData } = regValidation();
-    const { storeInSessionStr } = storeData();
-    const { user } = userData();
 
-    if (user.name) {
-      console.log("user ellenőrzés")
-      this.router.navigate(['main'])
+    if (this.userService.isLoggedIn()) {
+      await this.router.navigate(['main'])
+      return;
     }
 
-    startVal("blur", () => {
-      storeInSessionStr("user", validData());
+    const myRegForm = regValidation();
+
+    myRegForm.startValidation("blur", () => {
+      this.userService.user = {name: JSON.parse(myRegForm.dataToJson()).name};
       this.router.navigate(['main'])
     });
-
-    document.getElementById("GooBtn")?.addEventListener("click", () => {
-      this.google.signIn()
-    })
   }
 
-  scrollTo(element: any): void {
-    (document.getElementById(element) as HTMLElement).scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+  ngAfterViewInit(): void {
+    const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.forEach(el => new Tooltip(el));
+  }
+
+  googleLogin = () => {
+    this.google.signIn()
+  }
+
+  scrollToSectionAndFocus(): void {
+    this.signUpSection.nativeElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+
+    setTimeout(() => {
+      this.signUpEmail.nativeElement.focus();
+    }, 500);
   }
 }

@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment'
+import { UserService } from './user.service';
 
 const authCodeFlowConfig: AuthConfig = {
   issuer: 'https://accounts.google.com',
   strictDiscoveryDocumentValidation: false,
   redirectUri: window.location.origin,
-  clientId: '143m15hbklwer1235k1bfqkqj345', //TODO: here comes the real client ID
+  clientId: environment.googleClientId,
   scope: 'openid email profile'
 }
 
@@ -18,27 +20,26 @@ export class GoogleApiService {
 
   constructor(
     private readonly oAuthService: OAuthService,
-    private router: Router) {
+    private router: Router,
+    private userService: UserService) {
 
     oAuthService.configure(authCodeFlowConfig);
-    oAuthService.logoutUrl = 'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://localhost:4200';
   }
 
   checkLoginStatus = async () => {
-    console.log("lefut a checkloginstatus")
-    await this.oAuthService.loadDiscoveryDocumentAndTryLogin().then(async () => {
+
+    await this.oAuthService.loadDiscoveryDocumentAndTryLogin()
       if (this.oAuthService.hasValidAccessToken()) {
-        //van már        
+        sessionStorage.setItem('loginMethod', 'google');
         await this.oAuthService.loadUserProfile().then((userProfile: any) => {
-          const { storeInSessionStr } = storeData()
-          console.log("van google felhasználó")          
-          storeInSessionStr("user", JSON.stringify({ name: userProfile.info.name }));
+          this.userService.user = { name: userProfile.info.name }
+          console.log("A Google user is currently logged in.")
         })
 
       } else {
-        console.log("nincs bejelentkezett google felhasználó")
+        sessionStorage.setItem('loginMethod', 'local');
+        console.log("There is no logged-in Google user.")
       }
-    })
   }
 
   signIn() {
@@ -47,8 +48,8 @@ export class GoogleApiService {
     })
   }
 
-  signOut() {
-    this.oAuthService.logOut();
+  async signOut(){
+    this.oAuthService.logOut(true);
   }
 
 }

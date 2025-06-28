@@ -31,20 +31,28 @@
             ],
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "./src/assets/mymodules/myValidation.js",
-              "./src/assets/mymodules/storeData.js",
-              "./src/assets/mymodules/user.js",
-              "./src/assets/mymodules/welcome.js"
+              "./src/assets/mymodules/myValidation.js"
             ],
             "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
